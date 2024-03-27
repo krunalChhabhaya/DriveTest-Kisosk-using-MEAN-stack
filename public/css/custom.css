@@ -1,0 +1,14 @@
+body {
+    background-color: #474d53;
+    font-family: "open sans";
+}
+
+/* .login-container {
+    margin: 100px 0;
+    max-width: 400px;
+} */
+
+.form-container {
+    margin: 100px 0;
+    /* max-width: 600px; */
+}

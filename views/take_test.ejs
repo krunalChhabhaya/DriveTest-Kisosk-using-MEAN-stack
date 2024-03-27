@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header'); -%>
+    <link rel="stylesheet" href="css/custom.css">
+
+    <body>
+        <%- include('layouts/navbar'); -%>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 form-container p-4 bg-light rounded-4 shadow">
+                        <h2 class="text-center pb-2">Select Test Type</h2>
+                        <form method="POST">
+                            <div class="form-group">
+                                <label for="testType">Select Test Type:</label>
+                                <select class="form-control" id="testType" name="testType">
+                                    <option value="" disabled selected>Select Exam Type</option>
+                                    <option value="G2">G2</option>
+                                    <option value="G">G</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary mt-3">Fetch Test Results</button>
+                            </div>
+                        </form>
+
+                        <% if (usersWithCars && usersWithCars.length> 0) { %>
+                            <% usersWithCars.forEach(user=> { %>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title mt-2 mb-3">
+                                            <%= user.firstname %>
+                                                <%= user.lastname %>
+                                        </h5>
+                                        <p class="card-text my-1 ms-3">Number Plate: <%= user.car_details.platno %>
+                                        </p>
+                                        <p class="card-text my-1 ms-3">Car Brand: <%= user.car_details.make %>
+                                        </p>
+                                        <p class="card-text my-1 ms-3">Car Model: <%= user.car_details.model %>
+                                        </p>
+
+                                        <div class="text-center">
+                                            <% if (user.result !==undefined && user.comment !==undefined) { %>
+                                                <p>Result: <%= user.result ? 'Pass' : 'Fail' %>
+                                                </p>
+                                                <p>Comment: <%= user.comment %>
+                                                </p>
+                                                <% } else { %>
+                                                    <form method="POST"
+                                                        action="/take_test/updateResult/<%= user._id %>">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="result"
+                                                                id="pass" value="true">
+                                                            <label class="form-check-label" for="pass">Pass</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio" name="result"
+                                                                id="fail" value="false">
+                                                            <label class="form-check-label" for="fail">Fail</label>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label for="comment">Comment:</label>
+                                                            <textarea class="form-control" id="comment" name="comment"
+                                                                rows="3"></textarea>
+                                                        </div>
+                                                        <button type="submit"
+                                                            class="btn btn-primary mt-3">Update</button>
+                                                    </form>
+                                                    <% } %>
+                                        </div>
+                                        <script>
+                                            const userData = JSON.parse('<%- JSON.stringify(user) %>');
+                                            console.log('User Object:', userData);
+                                        </script>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <p>No results found.</p>
+                                        <% } %>
+
+                    </div>
+                </div>
+                <%- include('layouts/footer'); -%>
+                    <%- include('layouts/scripts'); -%>
+    </body>
+
+</html>

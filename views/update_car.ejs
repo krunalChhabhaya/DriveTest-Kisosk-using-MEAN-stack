@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header'); -%>
+    <link rel="stylesheet" href="css/custom.css">
+
+    <body>
+        <%- include('layouts/navbar'); -%>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 form-container p-4 bg-light rounded-4 shadow">
+                        <h2 class="text-center pb-2">Car Info. Update Form</h2>
+                        <% if (user.licenseno==='default' ) { %>
+                            <div class="alert alert-info text-center">
+                                <p><strong>Please enter the personal and car information on <a href="g2_test">G2
+                                            page</a></strong></p>
+                            </div>
+                            <% } else { %>
+                                <div class="row">
+                                    <% if (typeof message !=='undefined' ) { %>
+                                        <div class="alert alert-success text-center">
+                                            <p><strong>
+                                                    <%= message %>
+                                                </strong></p>
+                                        </div>
+                                        <% } %>
+                                            <div class="col-md-6">
+                                                <div class="form-section mb-4">
+                                                    <h3 class="fs-3 fw-semibold">Personal Info.</h3>
+                                                    <div class="form-group mb-2">
+                                                        <label for="firstName">First Name</label>
+                                                        <input type="text" class="form-control rounded-2" id="firstname"
+                                                            name="firstname" value="<%= user.firstname || '' %>"
+                                                            readonly>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label for="lastName">Last Name</label>
+                                                        <input type="text" class="form-control rounded-2" id="lastname"
+                                                            name="lastname" value="<%= user.lastname || '' %>" readonly>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label for="age">Age</label>
+                                                        <input type="number" class="form-control rounded-2" id="age"
+                                                            name="age" value="<%= user.age || '' %>" readonly>
+                                                    </div>
+                                                    <div class="form-group mb-2">
+                                                        <label for="dob">Date of Birth (YYYY/MM/DD)</label>
+                                                        <input type="text" class="form-control rounded-2" id="dob"
+                                                            name="dob"
+                                                            value="<%= user.dob ? user.dob.toISOString().slice(0, 10) : '' %>"
+                                                            readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-section">
+                                                    <h3 class="fs-3 fw-semibold">Car Information</h3>
+                                                    <form action="/updateCarInfo" method="POST">
+
+                                                        <input type="hidden" name="userId" value="<%= user._id %>">
+
+                                                        <div class="form-group mb-2">
+                                                            <label for="make">Make</label>
+                                                            <input type="text" class="form-control rounded-2" id="make"
+                                                                name="car_details_make"
+                                                                value="<%= user.car_details.make || '' %>">
+                                                        </div>
+                                                        <div class="form-group mb-2">
+                                                            <label for="model">Model</label>
+                                                            <input type="text" class="form-control rounded-2" id="model"
+                                                                name="car_details_model"
+                                                                value="<%= user.car_details.model || '' %>">
+                                                        </div>
+                                                        <div class="form-group mb-2">
+                                                            <label for="year">Year</label>
+                                                            <input type="number" class="form-control rounded-2"
+                                                                id="year" name="car_details_year"
+                                                                value="<%= user.car_details.year || '' %>">
+                                                        </div>
+                                                        <div class="form-group mb-4">
+                                                            <label for="platno">Plate Number</label>
+                                                            <input type="text" class="form-control rounded-2"
+                                                                id="platno" name="car_details_platno"
+                                                                value="<%= user.car_details.platno || '' %>">
+                                                        </div>
+                                                        <div class="btn-toolbar justify-content-center" role="toolbar"
+                                                            aria-label="Toolbar with button groups">
+                                                            <div class="btn-group me-3" role="group"
+                                                                aria-label="First group">
+                                                                <button type="submit" id="updateCarInfo"
+                                                                    class="btn btn-success">
+                                                                    Update
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+                <%- include('layouts/footer'); -%>
+                    <%- include('layouts/scripts'); -%>
+    </body>
+
+</html>

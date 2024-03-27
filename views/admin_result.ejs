@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header'); -%>
+    <link rel="stylesheet" href="css/custom.css">
+
+    <body>
+        <%- include('layouts/navbar'); -%>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10 form-container p-4 bg-light rounded-4 shadow">
+                        <h2 class="text-center pb-2">Users with Completed Tests</h2>
+                        <% if (users && users.length > 0) { %>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Make</th>
+                                        <th scope="col">Model</th>
+                                        <th scope="col">Plate Number</th>
+                                        <th scope="col">Test Result</th>
+                                        <th scope="col">Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach(user => { %>
+                                        <tr>
+                                            <td><%= user.firstname %></td>
+                                            <td><%= user.lastname %></td>
+                                            <td><%= user.age %></td>
+                                            <td><%= user.car_details.make %></td>
+                                            <td><%= user.car_details.model %></td>
+                                            <td><%= user.car_details.platno %></td>
+                                            <td><%= user.result ? 'Passed' : 'Failed' %></td>
+                                            <td><%= user.comment %></td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        <% } else { %>
+                            <p>No users have completed their tests yet.</p>
+                        <% } %>
+                    </div>
+                </div>
+                <%- include('layouts/footer'); -%>
+                    <%- include('layouts/scripts'); -%>
+    </body>
+</html>

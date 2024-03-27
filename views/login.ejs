@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header'); -%>
+    <link rel="stylesheet" href="css/custom.css">
+
+    <body>
+        <%- include('layouts/navbar'); -%>
+            <div class="container mt-5">
+                <div class="mt-5">
+
+                </div>
+                        <div class="row justify-content-between">
+                            <div class="col-md-6 mb-4 mt-5">
+                                <div class="p-4 bg-light rounded-4 shadow">
+                                    <h2 class="text-center">Signup</h2>
+                                    <% if (typeof success !=='undefined' ) { %>
+                                        <div class="alert alert-success" role="alert">
+                                            <%= success %>
+                                        </div>
+                                        <% } %>
+                                    <form action="/signup" method="POST">
+                                        <div class="form-group mb-3 has-validation">
+                                            <label for="signup-username ">Username</label>
+                                            <input type="text" class="form-control rounded-2" id="signup-username"
+                                                name="username" placeholder="Enter username" required>
+                                            <% if (typeof usernameError !=='undefined' ) { %>
+                                                <div class="text-danger fs-6" role="alert">
+                                                    <%= usernameError %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="signup-password">Password</label>
+                                            <input type="password" class="form-control rounded-2" id="signup-password"
+                                                name="password" placeholder="Enter password" required>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="signup-confirm-password">Confirm Password</label>
+                                            <input type="password" class="form-control rounded-2"
+                                                id="signup-confirm-password" name="confirmPassword"
+                                                placeholder="Confirm password" required>
+                                            <% if (typeof passwordError !=='undefined' ) { %>
+                                                <div class="text-danger fs-6" role="alert">
+                                                    <%= passwordError %>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="signup-user-type">User Type</label>
+                                            <select class="form-select rounded-2" id="signup-user-type" name="UserType">
+                                                <option value="" disabled selected>Select an User Type</option>
+                                                <option value="Driver">Driver</option>
+                                                <option value="Examiner">Examiner</option>
+                                                <option value="Admin">Admin</option>
+                                            </select>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-signup btn-block rounded">Sign
+                                                Up</button>
+                                        </div>
+                                        <% if (typeof error !=='undefined' ) { %>
+                                            <div class="alert alert-danger" role="alert">
+                                                <%= error %>
+                                            </div>
+                                            <% } %>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mt-5">
+                                <div class=" login-container p-4 bg-light rounded-4 shadow">
+                                    <h2 class="text-center">Login</h2>
+                                    <% if (typeof loginerror !=='undefined' ) { %>
+                                        <div class="alert alert-danger" role="alert">
+                                            <%= loginerror %>
+                                        </div>
+                                        <% } %>
+                                    <form action="/login" method="POST" autocomplete="on">
+                                        <div class="form-group mb-3">
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control rounded-2" id="username"
+                                                placeholder="Enter username" name="username">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control rounded-2" id="password"
+                                                placeholder="Enter password" name="password">
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit"
+                                                class="btn btn-primary btn-login btn-block btn-hover-border-color: transparent; rounded">Login</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+
+            <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
+            <%- include('layouts/scripts'); -%>
+    </body>
+
+</html>

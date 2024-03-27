@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layouts/header'); -%>
+
+<body>
+    <%- include('layouts/navbar'); -%>
+    <header class="masthead bg-secondary">
+        <div class="container position-relative px-2 px-lg-2">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="site-heading">
+                        <h1>Appointment</h1>
+                        <span class="subheading">Add Slots</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="container mt-5">
+        <form action="/appointment" method="post" class="appointment-form">
+            <h2 class="mb-4">Add Appointment Slot</h2>
+            <% if (successMessage) { %>
+                <div class="alert alert-success">
+                    <p><%= successMessage %></p>
+                </div>
+            <% } %>
+            <% if (errors && errors.length > 0) { %>
+                <div class="alert alert-danger">
+                    <% for (let error of errors) { %>
+                        <p><%= error %></p>
+                    <% } %>
+                </div>
+            <% } %>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date:</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+
+            <button type="button" id="showSlotsBtn" class="btn btn-secondary mb-3">Show Time Slots</button>
+
+            <div class="mb-3" id="hiddenSlots" style="display: none;">
+                <label class="form-label">Time Slots:</label>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="9:00" id="9:00">
+                            <label for="9:00">9:00 AM</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="9:30" id="9:30">
+                            <label for="9:30">9:30 AM</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="10:00" id="10:00">
+                            <label for="10:00">10:00 AM</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="10:30" id="10:30">
+                            <label for="10:30">10:30 AM</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="11:00" id="11:00">
+                            <label for="11:00">11:00 AM</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="11:30" id="11:30">
+                            <label for="11:30">11:30 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="12:00" id="12:00">
+                            <label for="12:00">12:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="12:30" id="12:30">
+                            <label for="12:30">12:30 AM</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="1:00" id="1:00">
+                            <label for="1:00">1:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="1:30" id="1:30">
+                            <label for="1:30">1:30 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="2:00" id="2:00">
+                            <label for="2:00">2:00 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="2:30" id="2:30">
+                            <label for="2:30">2:30 AM</label>
+                        </div>
+
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="3:00" id="3:00">
+                            <label for="3:00">3:00 AM</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Add Appointment</button>
+            </div>
+        </form>
+
+        <% if (availableSlots && availableSlots.length > 0) { %>
+            <div class="mb-3">
+                <label class="form-label">Available Time Slots:</label>
+                <div class="time-slots">
+                    <% availableSlots.forEach(slot => { %>
+                        <div class="form-check">
+                            <input type="checkbox" name="timeSlots" value="<%= slot.time %>" id="<%= slot.time %>">
+                            <label for="<%= slot.time %>"><%= slot.time %></label>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        <% } %>
+    </section>
+
+    <%- include('layouts/footer'); -%>
+    <%- include('layouts/scripts'); -%>
+
+    <script>
+        document.getElementById('showSlotsBtn').addEventListener('click', async () => {
+            const selectedDate = document.getElementById('date').value;
+            const response = await fetch(`/checkAppointment?date=${selectedDate}`);
+            
+            try {
+                if (response.ok) {
+                    const data = await response.json();
+                    const bookedSlots = data.bookedSlots;
+    
+                    const checkboxes = document.querySelectorAll('input[name="timeSlots"]');
+    
+                    checkboxes.forEach(checkbox => {
+                        const slotValue = checkbox.value;
+    
+                        const isBooked = bookedSlots.includes(slotValue);
+    
+                        if (isBooked) {
+                            checkbox.style.display = 'none';
+                            const slotLabel = document.querySelector(`label[for="${slotValue}"]`);
+                            if (slotLabel) {
+                                slotLabel.textContent = 'Slot is unavailable';
+                            }
+                        } else {
+                            checkbox.style.display = 'block';
+                            const defaultLabel = checkbox.parentNode.querySelector(`label[for="${slotValue}"]`);
+                            if (defaultLabel) {
+                                defaultLabel.style.display = 'block';
+                            }
+                        }
+                    });
+    
+                    document.getElementById('hiddenSlots').style.display = 'block';
+                } else {
+                    console.error('Error fetching data');
+                }
+            } catch (error) {
+                console.error('Error parsing JSON data', error);
+            }
+        });
+    </script>
+    
+    
+</body>
+
+</html>
